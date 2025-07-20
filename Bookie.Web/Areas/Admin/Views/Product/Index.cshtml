@@ -1,0 +1,76 @@
+﻿@model List<Product>; 
+
+
+
+
+
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Product List</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+
+        <div class="container">
+            <div class="row py-2">
+                <div class="col-md-12 text-end">
+                    <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary p-2">
+                        <i class="bi bi-plus-circle px-2"></i>  <span class="mx-1">Add new book</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <table id="myTable" class="table table-bordered table-striped">
+            <tr>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    ISBN
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Author
+                </th>
+                <th>
+                    Category
+                </th>
+
+                <th></th>
+            </tr>
+            @* <tbody> *@
+                @* @foreach (var item in Model) *@
+                @* { *@
+
+                @*     <tr> *@
+                @*         <td>@item.Title</td> *@
+                @*         <td>@item.ISBN</td> *@
+                @*         <td>@item.Price</td> *@
+                @*         <td>@item.Author</td> *@
+                @*         <td>@item.Category.Name</td> *@
+                @*         <td> *@
+                @*             <div class="w-100 btn-group gap-2" role="group"> *@
+                @*                 <a asp-controller="Product" asp-action="Upsert" asp-route-id="@item.Id" class="btn btn-primary mx-1"><i class="bi bi-pencil-square px-2"></i>Edit</a> *@
+                @*                 <a asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger mx-1"><i class="bi bi-trash px-2"></i>Delete</a> *@
+
+                @*             </div> *@
+                @*         </td> *@
+                @*     </tr> *@
+                @* } *@
+            @* </tbody> *@
+        </table>
+    </div>
+</div>
+
+
+
+
+    @section Scripts {
+        <script src="~/js/product.js"></script>
+    }
