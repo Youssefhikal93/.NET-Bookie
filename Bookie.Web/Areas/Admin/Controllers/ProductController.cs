@@ -1,6 +1,8 @@
 ﻿using Bookie.DataAccess.Repository.IRepository;
 using Bookie.Models;
 using Bookie.Models.ViewModels;
+using Bookie.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -8,6 +10,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 namespace BookieWeb.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
 
     public class ProductController : Controller
     {
