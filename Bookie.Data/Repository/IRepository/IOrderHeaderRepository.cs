@@ -11,6 +11,7 @@ namespace Bookie.DataAccess.Repository.IRepository
     public interface IOrderHeaderRepository: IRepository<OrderHeader>
     {
         void update(OrderHeader obj);
-        //void Save();
+        void UpdatesStatus(int id, string orderStatus, string? paymentIntenId=null);
+        void updateStripePaymentId(int id, string sessionId, string paymentIntenId);
     }
 }
