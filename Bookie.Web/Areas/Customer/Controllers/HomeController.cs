@@ -1,6 +1,8 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using Bookie.DataAccess.Repository.IRepository;
 using Bookie.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookie.Web.Areas.Customer.Controllers;
@@ -24,9 +26,45 @@ public class HomeController : Controller
 
     public IActionResult Details(int id)
     {
-        var product = _unitOfWork.Product.Get(p=>p.Id==id, includeProperties: "Category");
-        return View(product);
+        ShoppingCart cart = new ShoppingCart()
+        {
+            Product = _unitOfWork.Product.Get(p => p.Id == id, includeProperties: "Category"),
+            Count = 1,
+            ProductId = id
+        };
+        //var product = _unitOfWork.Product.Get(p=>p.Id==id, includeProperties: "Category");
+        return View(cart);
     }
+    [HttpPost]
+    [Authorize]
+    [HttpPost]
+    [Authorize]
+    public IActionResult Details(ShoppingCart shoppingCart)
+    {
+        var claimsIdentity = (ClaimsIdentity)User.Identity;
+        var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+        shoppingCart.ApplicationUserId = userId;
+        shoppingCart.Id = 0; // Ensure ID is reset for new entries
+
+        var existingShoppingCart = _unitOfWork.ShoppingCart
+            .Get(s => s.ApplicationUserId == userId && s.ProductId == shoppingCart.ProductId);
+
+        if (existingShoppingCart != null)
+        {
+            existingShoppingCart.Count += shoppingCart.Count;
+            _unitOfWork.ShoppingCart.Update(existingShoppingCart);
+            TempData["success"] = $"{existingShoppingCart.Count} items now in your cart!";
+        }
+        else
+        {
+            _unitOfWork.ShoppingCart.Add(shoppingCart);
+            TempData["success"] = $"{shoppingCart.Count} item(s) added to cart successfully!";
+        }
+
+        _unitOfWork.Save();
+        return RedirectToAction(nameof(Index));
+    }
+
 
     public IActionResult Privacy()
     {
