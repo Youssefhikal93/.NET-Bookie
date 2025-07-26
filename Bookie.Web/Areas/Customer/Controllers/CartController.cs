@@ -5,6 +5,8 @@ using Bookie.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Stripe;
+using Stripe.Checkout;
 using System.Security.Claims;
 
 namespace BookieWeb.Areas.Customer.Controllers
@@ -72,71 +74,7 @@ namespace BookieWeb.Areas.Customer.Controllers
             return View(ShoppingCartVM);
         }
 
-        //[HttpPost]
-        //public IActionResult Summary(ShoppingCartVM shoppingCartVM)
-        //{
-        //    var claimsIdentoty = (ClaimsIdentity)User.Identity;
-        //    var userId = claimsIdentoty.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-        //    // Use the parameter shoppingCartVM instead of ShoppingCartVM
-        //    shoppingCartVM.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(
-        //        u => u.ApplicationUserId == userId,
-        //        includeProperties: "Product");
-
-        //    var applicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
-        //    shoppingCartVM.OrderHeader.ApplicationUser = applicationUser;
-        //    shoppingCartVM.OrderHeader.Name = applicationUser.Name;
-        //    shoppingCartVM.OrderHeader.PhoneNumber = applicationUser.PhoneNumber;
-        //    shoppingCartVM.OrderHeader.StreetAddress = applicationUser.StreetAddress;
-        //    shoppingCartVM.OrderHeader.City = applicationUser.City;
-        //    shoppingCartVM.OrderHeader.State = applicationUser.State;
-        //    shoppingCartVM.OrderHeader.PostalCode = applicationUser.PostalCode;
-        //    shoppingCartVM.OrderHeader.OrderDate = System.DateTime.Now;
-        //    shoppingCartVM.OrderHeader.ApplicationUserId = userId;
-
-        //    // Initialize OrderTotal before the loop
-        //    shoppingCartVM.OrderHeader.OrderTotal = 0;
-
-        //    foreach (var cart in shoppingCartVM.ShoppingCartList)
-        //    {
-        //        cart.Price = GetPriceBasedOnQuantity(cart);
-        //        shoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
-        //    }
-
-        //    if (applicationUser.CompanyId.GetValueOrDefault() == 0)
-        //    {
-        //        shoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
-        //        shoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
-        //    }
-        //    else
-        //    {
-        //        shoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusDelayedPayment;
-        //        shoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
-        //    }
-
-        //    _unitOfWork.OrderHeader.Add(shoppingCartVM.OrderHeader);
-        //    _unitOfWork.Save();
-
-        //    foreach (var cart in shoppingCartVM.ShoppingCartList)
-        //    {
-        //        OrderDetail orderDetail = new()
-        //        {
-        //            ProductId = cart.ProductId,
-        //            OrderHeaderId = shoppingCartVM.OrderHeader.Id,
-        //            Price = cart.Price,
-        //            Count = cart.Count
-        //        };
-        //        _unitOfWork.OrderDetail.Add(orderDetail);
-        //    }
-        //    _unitOfWork.Save();
-
-        //    if (applicationUser.CompanyId.GetValueOrDefault() == 0)
-        //    {
-        //        //StripeLogic
-        //    }
-
-        //    return RedirectToAction(nameof(OrderConfirmation), new { id = shoppingCartVM.OrderHeader.Id });
-        //}
+        
 
         [HttpPost]
         [ActionName("Summary")]
@@ -196,6 +134,51 @@ namespace BookieWeb.Areas.Customer.Controllers
             if (applicationUser.CompanyId.GetValueOrDefault() == 0)
             {
                 //StripeLogic
+                var domain = "https://localhost:7187/";
+                var options = new Stripe.Checkout.SessionCreateOptions
+                {
+                    SuccessUrl = domain + $"customer/cart/orderconfirmation?id={ShoppingCartVM.OrderHeader.Id}",
+                    CancelUrl = domain + "customer/cart/index",
+                    LineItems = new List<Stripe.Checkout.SessionLineItemOptions>(),
+
+                    //LineItems = new List<Stripe.Checkout.SessionLineItemOptions>
+                    //    {
+
+                    //        new Stripe.Checkout.SessionLineItemOptions
+                    //        {
+                    //            Price = "price_1MotwRLkdIwHu7ixYcPLm5uZ",
+                    //            Quantity = 2,
+                    //        },
+                    //    },
+                    Mode = "payment",
+                };
+                foreach(var item in ShoppingCartVM.ShoppingCartList)
+                {
+                    var sessionItem = new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmountDecimal = (decimal)item.Price *100,
+                            Currency = "usd",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.Product.Title
+                            }
+                        },
+                        Quantity=item.Count
+
+                    };
+                    options.LineItems.Add(sessionItem);
+                }
+
+                var service = new SessionService();
+                Session session = service.Create(options);
+
+                _unitOfWork.OrderHeader.updateStripePaymentId(ShoppingCartVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
+                _unitOfWork.Save();
+
+                Response.Headers.Add("Location", session.Url);
+                return new StatusCodeResult(303);
             }
 
             return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderHeader.Id });
@@ -206,6 +189,25 @@ namespace BookieWeb.Areas.Customer.Controllers
 
         public IActionResult OrderConfirmation(int id)
         {
+            OrderHeader Placedorder= _unitOfWork.OrderHeader.Get(u => u.Id == id, includeProperties: "ApplicationUser");
+            if(Placedorder.PaymentStatus != SD.PaymentStatusDelayedPayment)
+            {
+                var service = new SessionService();
+                Session session = service.Get(Placedorder.SessionId);
+
+                if (session.PaymentStatus.ToLower() == "paid")
+                {
+                    _unitOfWork.OrderHeader.UpdatesStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.OrderHeader.updateStripePaymentId(id, session.Id, session.PaymentIntentId);
+                    _unitOfWork.Save();
+                }
+
+            }
+
+          var currentShoppingCarts=  _unitOfWork.ShoppingCart
+                .GetAll(u => u.ApplicationUserId == Placedorder.ApplicationUser.Id);
+            _unitOfWork.ShoppingCart.RemoveRange(currentShoppingCarts);
+            _unitOfWork.Save();
             return View(id);
         }
         public IActionResult Plus(int cartId)
