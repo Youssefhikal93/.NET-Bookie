@@ -74,7 +74,6 @@ namespace BookieWeb.Areas.Customer.Controllers
             return View(ShoppingCartVM);
         }
 
-        
 
         [HttpPost]
         [ActionName("Summary")]
