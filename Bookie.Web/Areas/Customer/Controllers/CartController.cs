@@ -74,71 +74,7 @@ namespace BookieWeb.Areas.Customer.Controllers
             return View(ShoppingCartVM);
         }
 
-        //[HttpPost]
-        //public IActionResult Summary(ShoppingCartVM shoppingCartVM)
-        //{
-        //    var claimsIdentoty = (ClaimsIdentity)User.Identity;
-        //    var userId = claimsIdentoty.FindFirst(ClaimTypes.NameIdentifier).Value;
-        
-        //    // Use the parameter shoppingCartVM instead of ShoppingCartVM
-        //    shoppingCartVM.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(
-        //        u => u.ApplicationUserId == userId,
-        //        includeProperties: "Product");
 
-        //    var applicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
-        //    shoppingCartVM.OrderHeader.ApplicationUser = applicationUser;
-        //    shoppingCartVM.OrderHeader.Name = applicationUser.Name;
-        //    shoppingCartVM.OrderHeader.PhoneNumber = applicationUser.PhoneNumber;
-        //    shoppingCartVM.OrderHeader.StreetAddress = applicationUser.StreetAddress;
-        //    shoppingCartVM.OrderHeader.City = applicationUser.City;
-        //    shoppingCartVM.OrderHeader.State = applicationUser.State;
-        //    shoppingCartVM.OrderHeader.PostalCode = applicationUser.PostalCode;
-        //    shoppingCartVM.OrderHeader.OrderDate = System.DateTime.Now;
-        //    shoppingCartVM.OrderHeader.ApplicationUserId = userId;
-
-        //    // Initialize OrderTotal before the loop
-        //    shoppingCartVM.OrderHeader.OrderTotal = 0;
-
-        //    foreach (var cart in shoppingCartVM.ShoppingCartList)
-        //    {
-        //        cart.Price = GetPriceBasedOnQuantity(cart);
-        //        shoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.Count);
-        //    }
-
-        //    if (applicationUser.CompanyId.GetValueOrDefault() == 0)
-        //    {
-        //        shoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
-        //        shoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
-        //    }
-        //    else
-        //    {
-        //        shoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusDelayedPayment;
-        //        shoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
-        //    }
-
-        //    _unitOfWork.OrderHeader.Add(shoppingCartVM.OrderHeader);
-        //    _unitOfWork.Save();
-
-        //    foreach (var cart in shoppingCartVM.ShoppingCartList)
-        //    {
-        //        OrderDetail orderDetail = new()
-        //        {
-        //            ProductId = cart.ProductId,
-        //            OrderHeaderId = shoppingCartVM.OrderHeader.Id,
-        //            Price = cart.Price,
-        //            Count = cart.Count
-        //        };
-        //        _unitOfWork.OrderDetail.Add(orderDetail);
-        //    }
-        //    _unitOfWork.Save();
-
-        //    if (applicationUser.CompanyId.GetValueOrDefault() == 0)
-        //    {
-        //        //StripeLogic
-        //    }
-
-        //    return RedirectToAction(nameof(OrderConfirmation), new { id = shoppingCartVM.OrderHeader.Id });
-        //}
 
         [HttpPost]
         [ActionName("Summary")]
