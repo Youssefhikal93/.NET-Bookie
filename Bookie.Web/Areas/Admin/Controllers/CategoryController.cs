@@ -1,12 +1,15 @@
 ﻿using Bookie.DataAccess.Data;
 using Bookie.DataAccess.Repository.IRepository;
 using Bookie.Models;
+using Bookie.Utilities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookie.Web.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class CategoryController : Controller
     {
     private readonly IUnitOfWork _unitOfWork;
