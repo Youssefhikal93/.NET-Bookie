@@ -75,7 +75,6 @@ namespace BookieWeb.Areas.Customer.Controllers
         }
 
 
-
         [HttpPost]
         [ActionName("Summary")]
         public IActionResult SummaryPost()
