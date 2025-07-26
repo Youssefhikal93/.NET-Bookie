@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Bookie.Utilities
 {
-   //public class StripeSettings
-   // {
-   //     public string  SecretKey { get; set; }
-   //     public string PublishableKey { get; set; }
-   // }
+    public class StripeSettings
+    {
+        public string SecretKey { get; set; }
+        public string PublishableKey { get; set; }
+    } 
 }

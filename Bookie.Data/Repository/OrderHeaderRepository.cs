@@ -27,5 +27,38 @@ namespace Bookie.DataAccess.Repository
         {
             _db.OrderHeaders.Update(obj);
         }
+
+        public void UpdatesStatus(int id, string orderStatus, string? paymentStatus = null)
+        {
+            var currentOrder = _db.OrderHeaders.FirstOrDefault(o => o.Id==id);
+            if(currentOrder != null)
+            {
+                currentOrder.OrderStatus = orderStatus;
+
+                if (!string.IsNullOrEmpty(paymentStatus))
+                {
+                    currentOrder.PaymentStatus = paymentStatus;
+                }
+            }
+        }
+
+        public void updateStripePaymentId(int id, string sessionId, string paymentIntenId)
+        {
+            OrderHeader currentOrder = _db.OrderHeaders.FirstOrDefault(o=>o.Id==id);
+            if(currentOrder!= null)
+            {
+                if (!string.IsNullOrEmpty(sessionId))
+                {
+
+                currentOrder.SessionId = sessionId;
+                }
+                if (!string.IsNullOrEmpty(paymentIntenId))
+                {
+
+                    currentOrder.PaymentIntenId = paymentIntenId;
+                    currentOrder.PaymentDate = DateTime.Now;
+                }
+            }
+        }
     }
 }
