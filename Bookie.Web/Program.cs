@@ -36,6 +36,26 @@ namespace BookieWeb
                 options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
                 
             });
+
+            //Adding facebook 
+            builder.Services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = "2809349919266513";
+                options.AppSecret = "96dbd0a24a143975c3f58df58ebf6140";
+
+            });
+
+            //Adding session and cookie
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(100);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            }
+            );
+
+
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
             var app = builder.Build();
@@ -55,6 +75,7 @@ namespace BookieWeb
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapRazorPages();
+            app.UseSession();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");

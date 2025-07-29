@@ -2,7 +2,9 @@ using System.Diagnostics;
 using System.Security.Claims;
 using Bookie.DataAccess.Repository.IRepository;
 using Bookie.Models;
+using Bookie.Utilities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookie.Web.Areas.Customer.Controllers;
@@ -37,8 +39,6 @@ public class HomeController : Controller
     }
     [HttpPost]
     [Authorize]
-    [HttpPost]
-    [Authorize]
     public IActionResult Details(ShoppingCart shoppingCart)
     {
         var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -53,12 +53,19 @@ public class HomeController : Controller
         {
             existingShoppingCart.Count += shoppingCart.Count;
             _unitOfWork.ShoppingCart.Update(existingShoppingCart);
+            _unitOfWork.Save();
+
             TempData["success"] = $"{existingShoppingCart.Count} items now in your cart!";
         }
         else
         {
             _unitOfWork.ShoppingCart.Add(shoppingCart);
+            _unitOfWork.Save();
+
             TempData["success"] = $"{shoppingCart.Count} item(s) added to cart successfully!";
+            //Add to session 
+            HttpContext.Session.SetInt32(SD.sessionCart, _unitOfWork.ShoppingCart
+            .GetAll(s => s.ApplicationUserId == userId).Count());
         }
 
         _unitOfWork.Save();

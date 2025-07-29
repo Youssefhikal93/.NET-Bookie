@@ -201,6 +201,8 @@ namespace BookieWeb.Areas.Customer.Controllers
                     _unitOfWork.Save();
                 }
 
+                HttpContext.Session.Clear();
+
             }
 
           var currentShoppingCarts=  _unitOfWork.ShoppingCart
@@ -235,6 +237,9 @@ namespace BookieWeb.Areas.Customer.Controllers
             }
             if (cartFromDb.Count == 1)
             {
+                //update session 
+                HttpContext.Session.SetInt32(SD.sessionCart, _unitOfWork.ShoppingCart
+               .GetAll(s => s.ApplicationUserId == cartFromDb.ApplicationUserId).Count() - 1);
                 _unitOfWork.ShoppingCart.Remove(cartFromDb);
             }
             else
@@ -257,6 +262,11 @@ namespace BookieWeb.Areas.Customer.Controllers
                 return RedirectToAction(nameof(Index));
             }
             _unitOfWork.ShoppingCart.Remove(cartFromDb);
+
+            //update session 
+            HttpContext.Session.SetInt32(SD.sessionCart, _unitOfWork.ShoppingCart
+           .GetAll(s => s.ApplicationUserId == cartFromDb.ApplicationUserId).Count()-1);
+
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
