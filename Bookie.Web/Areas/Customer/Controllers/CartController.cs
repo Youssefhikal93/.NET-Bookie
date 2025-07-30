@@ -3,6 +3,7 @@ using Bookie.Models;
 using Bookie.Models.ViewModels;
 using Bookie.Utilities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Stripe;
@@ -16,12 +17,14 @@ namespace BookieWeb.Areas.Customer.Controllers
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IEmailSender _emailsender;
         [BindProperty] // will automaticully populate the model once we post (in nput fields)
         public ShoppingCartVM ShoppingCartVM { get; set; }
 
-        public CartController(IUnitOfWork unitOfWork)
+        public CartController(IUnitOfWork unitOfWork, IEmailSender emailsender)
         {
             _unitOfWork = unitOfWork;
+            _emailsender = emailsender;
         }
         public IActionResult Index()
         {
@@ -204,6 +207,8 @@ namespace BookieWeb.Areas.Customer.Controllers
                 HttpContext.Session.Clear();
 
             }
+
+            _emailsender.SendEmailAsync(Placedorder.ApplicationUser.Email, "New Order - Bookie", $"<p>Your order has been placed #{Placedorder.Id} </p>");
 
           var currentShoppingCarts=  _unitOfWork.ShoppingCart
                 .GetAll(u => u.ApplicationUserId == Placedorder.ApplicationUser.Id);
