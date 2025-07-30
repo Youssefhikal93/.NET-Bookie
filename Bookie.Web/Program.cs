@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Stripe;
+using Bookie.DataAccess.DbIntializer;
 
 namespace BookieWeb
 {
@@ -58,6 +59,7 @@ namespace BookieWeb
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
+            builder.Services.AddScoped<IDbInitializer, DbInitializer>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -76,11 +78,23 @@ namespace BookieWeb
             app.UseAuthorization();
             app.MapRazorPages();
             app.UseSession();
+
+            //inject dbintalizer 
+            SeedDatabase();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
+
+            void SeedDatabase()
+            {
+                using(var scope = app.Services.CreateScope())
+                {
+                  var dbIntalizer =  scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+                    dbIntalizer.Initialize();
+                }
+            }
         }
     }
 }

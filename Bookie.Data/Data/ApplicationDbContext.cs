@@ -86,7 +86,7 @@ namespace Bookie.DataAccess.Data
                    Price = 65,
                    Price50 = 60,
                    Price100 = 55,
-                   CategoryId = 7,
+                   CategoryId = 1,
                    ImageUrl = ""
                },
                new Product
@@ -100,7 +100,7 @@ namespace Bookie.DataAccess.Data
                    Price = 27,
                    Price50 = 25,
                    Price100 = 20,
-                   CategoryId = 8,
+                   CategoryId = 2,
                    ImageUrl = ""
                },
                new Product
@@ -113,7 +113,7 @@ namespace Bookie.DataAccess.Data
                    ListPrice = 25,
                    Price = 23,
                    Price50 = 22,
-                   CategoryId = 12,
+                   CategoryId = 3,
                    ImageUrl = ""
                }
                );

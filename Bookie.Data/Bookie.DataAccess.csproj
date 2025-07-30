@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bookie.Models\Bookie.Models.csproj" />
+    <ProjectReference Include="..\Bookie.Utilities\Bookie.Utilities.csproj" />
   </ItemGroup>
 
 </Project>
