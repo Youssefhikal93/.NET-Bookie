@@ -146,7 +146,7 @@ namespace BookieWeb.Areas.Admin.Controllers
               .GetAll(u => u.OrderHeaderId == orderVM.OrderHeader.Id, includeProperties: "Product");
 
             //StripeLogic
-            var domain = "https://localhost:7187/";
+            var domain = Request.Scheme + "://" + Request.Host.Value + "/";
             var options = new Stripe.Checkout.SessionCreateOptions
             {
                 SuccessUrl = domain + $"admin/order/PaymentConfirmation?orderHeaderId={orderVM.OrderHeader.Id}",

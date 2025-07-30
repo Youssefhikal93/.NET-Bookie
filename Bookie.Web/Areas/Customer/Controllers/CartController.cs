@@ -136,7 +136,7 @@ namespace BookieWeb.Areas.Customer.Controllers
             if (applicationUser.CompanyId.GetValueOrDefault() == 0)
             {
                 //StripeLogic
-                var domain = "https://localhost:7187/";
+                var domain = Request.Scheme+"://"+Request.Host.Value+"/";
                 var options = new Stripe.Checkout.SessionCreateOptions
                 {
                     SuccessUrl = domain + $"customer/cart/orderconfirmation?id={ShoppingCartVM.OrderHeader.Id}",
