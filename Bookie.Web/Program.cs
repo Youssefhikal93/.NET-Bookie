@@ -23,7 +23,7 @@ namespace BookieWeb
 
             builder.Services.AddDbContext<ApplicationDbContext>(options=>options
             .UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+           
             //to inject the secrets in app.settings.json into the genric class
             builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
             
@@ -41,8 +41,8 @@ namespace BookieWeb
             //Adding facebook 
             builder.Services.AddAuthentication().AddFacebook(options =>
             {
-                options.AppId = "2809349919266513";
-                options.AppSecret = "96dbd0a24a143975c3f58df58ebf6140";
+                options.AppId = builder.Configuration.GetSection("Facebook:AppId").Get<string>()!;
+                options.AppSecret = builder.Configuration.GetSection("Facebook:AppSecret").Get<string>()!; 
 
             });
 

@@ -71,27 +71,27 @@ html {
 }
 
 .text-secondary {
-    color: #425F4B !important;
+    color: #375534 !important;
 }
 
 .text-primary {
-    color: #192E2F !important;
+    color: #0f2a1d !important;
 }
 
 .text-success {
-    color: #4b7147 !important;
+    color: #6b9071 !important;
 }
 
 .bg-primary {
-    background-color: #192E2F !important;
+    background-color: #0f2a1d !important;
 }
 
 .bg-secondary {
-    background-color: #3A595C !important;
+    background-color: #375534 !important;
 }
 
 bg-success {
-    background-color: #4b7147 !important;
+    background-color: #6b9071 !important;
 }
 
 
@@ -107,16 +107,16 @@ bg-success {
 
 
 .btn-outline-primary {
-    color: #192E2F;
-    border-color: #192E2F;
+    color: #0f2a1d;
+    border-color: #0f2a1d;
 }
 
 
 
     .btn-outline-primary:hover {
         color: #fff;
-        background-color: #192E2F;
-        border-color: #192E2F;
+        background-color: #0f2a1d;
+        border-color: #0f2a1d;
     }
 
 
@@ -130,8 +130,8 @@ bg-success {
     .btn-check:checked + .btn-outline-primary,
     .btn-check:active + .btn-outline-primary, .btn-outline-primary:active, .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show {
         color: #fff;
-        background-color: #192E2F;
-        border-color: #192E2F;
+        background-color: #0f2a1d;
+        border-color: #0f2a1d;
     }
 
 
@@ -144,7 +144,7 @@ bg-success {
 
 
     .btn-outline-primary:disabled, .btn-outline-primary.disabled {
-        color: #192E2F;
+        color: #0f2a1d;
         background-color: transparent;
     }
 
@@ -194,16 +194,16 @@ bg-success {
 
 
 .btn-outline-secondary {
-    color: #134b5f;
-    border-color: #134b5f;
+    color: #375534;
+    border-color: #375534;
 }
 
 
 
     .btn-outline-secondary:hover {
         color: #fff;
-        background-color: #134b5f;
-        border-color: #134b5f;
+        background-color: #375534;
+        border-color: #375534;
     }
 
 
@@ -217,8 +217,8 @@ bg-success {
     .btn-check:checked + .btn-outline-secondary,
     .btn-check:active + .btn-outline-secondary, .btn-outline-secondary:active, .btn-outline-secondary.active, .btn-outline-secondary.dropdown-toggle.show {
         color: #fff;
-        background-color: #134b5f;
-        border-color: #134b5f;
+        background-color: #375534;
+        border-color: #375534;
     }
 
 
@@ -231,7 +231,7 @@ bg-success {
 
 
     .btn-outline-secondary:disabled, .btn-outline-secondary.disabled {
-        color: #134b5f;
+        color: #375534;
         background-color: transparent;
     }
 
@@ -244,8 +244,8 @@ bg-success {
 
 .btn-primary {
     color: #fff;
-    background-color: #192E2F;
-    border-color: #192E2F;
+    background-color: #0f2a1d;
+    border-color: #0f2a1d;
 }
 
 
@@ -349,8 +349,8 @@ bg-success {
 
 .btn-secondary {
     color: #fff;
-    background-color: #134b5f;
-    border-color: #134b5f;
+    background-color: #375534;
+    border-color: #375534;
 }
 
 
@@ -453,16 +453,16 @@ bg-success {
 
 
 .btn-outline-success {
-    color: #4b7147;
-    border-color: #4b7147;
+    color: #6b9071;
+    border-color: #6b9071;
 }
 
 
 
     .btn-outline-success:hover {
         color: #fff;
-        background-color: #4b7147;
-        border-color: #4b7147;
+        background-color: #6b9071;
+        border-color: #6b9071;
     }
 
 
@@ -476,8 +476,8 @@ bg-success {
     .btn-check:checked + .btn-outline-success,
     .btn-check:active + .btn-outline-success, .btn-outline-success:active, .btn-outline-success.active, .btn-outline-success.dropdown-toggle.show {
         color: #fff;
-        background-color: #4b7147;
-        border-color: #4b7147;
+        background-color: #6b9071;
+        border-color: #6b9071;
     }
 
 
@@ -490,7 +490,7 @@ bg-success {
 
 
     .btn-outline-success:disabled, .btn-outline-success.disabled {
-        color: #4b7147;
+        color: #6b9071;
         background-color: transparent;
     }
 
@@ -503,8 +503,8 @@ bg-success {
 
 .btn-success {
     color: #fff;
-    background-color: #4b7147;
-    border-color: #4b7147;
+    background-color: #6b9071;
+    border-color: #6b9071;
 }
 
 
@@ -549,3 +549,11 @@ bg-success {
         background-color: #578553;
         border-color: #578553;
     }
+
+
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    background-color: #375534 !important;
+  
+}
