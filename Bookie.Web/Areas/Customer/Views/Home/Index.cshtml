@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@* @model IEnumerable<Product>
 
 
 <div class="row pb-3">
@@ -54,4 +54,104 @@
 
     }
 
+</div> *@
+
+                                @model IEnumerable<Product>
+
+<!-- Hero Section -->
+<div class="hero-section mb-5" style="background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80'); background-size: cover; height: 60vh; display: flex; align-items: center;">
+    <div class="container text-center text-white">
+        <h1 class="display-4 fw-bold">Discover Your Next Favorite Book</h1>
+        <p class="lead">Explore our curated collection of bestsellers and hidden gems</p>
+        <a href="#featured-books" class="btn btn-primary btn-lg mt-3">Browse Collection</a>
+    </div>
 </div>
+
+
+
+<!-- Featured Books Section -->
+<div class="container mb-5" id="featured-books">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Featured Books</h2>
+        <a href="#featured-books" class="btn btn-outline-primary">View All</a>
+    </div>
+
+    <div class="row g-4">
+        @foreach (Product product in Model.Take(8))
+        {
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="position-relative">
+                        @if (product.ImageUrl != null)
+                        {
+                            <img src="@product.ImageUrl" class="card-img-top" alt="@product.Title" style="height: 300px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <img src="https://placehold.co/300x400/png" class="card-img-top" alt="@product.Title" style="height: 300px; object-fit: cover;">
+                        }
+                        <div class="badge bg-danger position-absolute top-0 end-0 m-2">Bestseller</div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Title</h5>
+                        <p class="card-text text-muted">@product.Author</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-decoration-line-through text-muted">@product.ListPrice.ToString("C")</span>
+                                <span class="fw-bold ms-2">@product.Price100.ToString("C")</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Details" asp-route-id="@product.Id"
+                           class="btn btn-primary w-100">View Details</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Testimonials Section -->
+<div class="bg-light py-5 mb-5">
+    <div class="container">
+        <h2 class="text-center mb-5">What Our Readers Say</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-quote-left fa-2x text-muted"></i>
+                        </div>
+                        <p class="card-text">"The best book store I've found online. Fast delivery and great selection!"</p>
+                        <div class="mt-3">
+                            <img src="https://placehold.co/50x50" class="rounded-circle" alt="Customer">
+                            <p class="mt-2 mb-0 fw-bold">Sarah Johnson</p>
+                            <small class="text-muted">Verified Buyer</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Repeat for other testimonials -->
+        </div>
+    </div>
+</div>
+
+<!-- Newsletter CTA -->
+<div class="bg-primary text-white py-5">
+    <div class="container text-center">
+        <h2 class="mb-3">Stay Updated</h2>
+        <p class="lead mb-4">Subscribe to our newsletter for the latest releases and exclusive deals</p>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form class="input-group" method="post" asp-action="Index">
+                    <input type="email" name="email" class="form-control" placeholder="Your email address" required>
+                    <button class="btn btn-dark" type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add this to your _Layout.cshtml head section if not already present -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />

@@ -117,7 +117,8 @@ namespace Bookie.DataAccess.Data
                    ImageUrl = ""
                }
                );
-            }
-        };
-   
-}
+        }
+    }
+    }
+
+

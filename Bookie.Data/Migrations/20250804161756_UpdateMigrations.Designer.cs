@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bookie.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250725025954_addedOrderDetailsAndHeadersTables")]
-    partial class addedOrderDetailsAndHeadersTables
+    [Migration("20250804161756_UpdateMigrations")]
+    partial class UpdateMigrations
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,6 +156,9 @@ namespace Bookie.DataAccess.Migrations
                     b.Property<string>("OrderStatus")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("OrderTotal")
+                        .HasColumnType("float");
+
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
 
@@ -176,6 +179,9 @@ namespace Bookie.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SessionId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ShippingDate")
                         .HasColumnType("datetime2");
 
@@ -189,9 +195,6 @@ namespace Bookie.DataAccess.Migrations
 
                     b.Property<string>("TrackingNumber")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("orderTotal")
-                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -296,7 +299,7 @@ namespace Bookie.DataAccess.Migrations
                         {
                             Id = 4,
                             Author = "Abby Muscles",
-                            CategoryId = 7,
+                            CategoryId = 1,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "WS3333333301",
                             ImageUrl = "",
@@ -310,7 +313,7 @@ namespace Bookie.DataAccess.Migrations
                         {
                             Id = 5,
                             Author = "Ron Parker",
-                            CategoryId = 8,
+                            CategoryId = 2,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "SOTJ1111111101",
                             ImageUrl = "",
@@ -324,7 +327,7 @@ namespace Bookie.DataAccess.Migrations
                         {
                             Id = 6,
                             Author = "Laura Phantom",
-                            CategoryId = 12,
+                            CategoryId = 3,
                             Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                             ISBN = "FOT000000001",
                             ImageUrl = "",

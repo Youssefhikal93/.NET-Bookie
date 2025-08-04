@@ -1,10 +1,12 @@
 using System.Diagnostics;
 using System.Security.Claims;
+using System.Text.Encodings.Web;
 using Bookie.DataAccess.Repository.IRepository;
 using Bookie.Models;
 using Bookie.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bookie.Web.Areas.Customer.Controllers;
@@ -14,16 +16,36 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IUnitOfWork _unitOfWork;
-    public HomeController(ILogger<HomeController> logger , IUnitOfWork unitOfWork)
+    private readonly IEmailSender _emailSender;
+    public HomeController(ILogger<HomeController> logger , IUnitOfWork unitOfWork, IEmailSender emailSender)
     {
         _logger = logger;
-        _unitOfWork = unitOfWork; 
+        _unitOfWork = unitOfWork;
+        _emailSender = emailSender;
     }
 
     public IActionResult Index()
     {
         IEnumerable<Product> productList = _unitOfWork.Product.GetAll(includeProperties: "Category");
         return View(productList);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Index(string email)
+    {
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            TempData["error"] = "Please enter a valid email address";
+            return RedirectToAction(nameof(Index));
+        }
+        TempData["success"] = "Welcom to our family ?? !";
+        await _emailSender.SendEmailAsync(
+           email,
+           "Subscription Confirmation",
+           "Thank you for subscribing to our newsletter!");
+
+        TempData["success"] = "Your email subscribed successfully";
+        return RedirectToAction(nameof(Index));
     }
 
     public IActionResult Details(int id)

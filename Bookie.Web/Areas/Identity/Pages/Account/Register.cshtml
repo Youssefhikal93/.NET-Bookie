@@ -123,7 +123,7 @@
                                     <p>
                                         @foreach (var provider in Model.ExternalLogins!)
                                         {
-                                            <button type="submit" class="btn btn-outline-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                                            <button type="submit" class="btn btn-outline-light" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
                                             @if (provider.Name == "Facebook")
                                             {
                                                 <i class="fab fa-facebook-f me-2"></i>
