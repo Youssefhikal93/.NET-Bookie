@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Stripe;
 using Bookie.DataAccess.DbIntializer;
+using System.Globalization;
 
 namespace BookieWeb
 {
@@ -60,6 +61,10 @@ namespace BookieWeb
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IEmailSender, EmailSender>();
             builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
+            var cultureInfo = new CultureInfo("en-US");
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
