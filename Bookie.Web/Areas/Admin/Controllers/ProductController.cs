@@ -65,7 +65,7 @@ namespace BookieWeb.Areas.Admin.Controllers
                 {
                     string fileName = Guid.NewGuid().ToString()+Path.GetExtension
                         (file.FileName);
-                    string productPath = Path.Combine(wwwRootPath, @"images\product");
+                    string productPath = Path.Combine(wwwRootPath, @"images/product");
 
                     //Delete the image if exixts on update case!
                     if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
@@ -82,7 +82,7 @@ namespace BookieWeb.Areas.Admin.Controllers
                     {
                         file.CopyTo(fileStream);
                     }
-                    productVM.Product.ImageUrl = @"\images\product\" + fileName;
+                    productVM.Product.ImageUrl = @"/images/product/" + fileName;
 
                 }
 
